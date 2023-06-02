@@ -13,5 +13,5 @@ public interface MealsStorage {
 
     void update(Meal userMeal);
 
-    void delete(Meal userMeal);
+    void delete(int id);
 }

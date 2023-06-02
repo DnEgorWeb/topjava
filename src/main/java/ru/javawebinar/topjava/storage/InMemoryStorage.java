@@ -42,17 +42,21 @@ public class InMemoryStorage implements MealsStorage {
 
     @Override
     public void update(Meal userMeal) {
-        int index = IntStream.range(0, userMeals.size())
-                .filter(i -> userMeals.get(i).getId().equals(userMeal.getId()))
-                .findFirst()
-                .orElse(-1);
+        int index = userMeal.getId();
         if (index >= 0) {
             userMeals.set(index, userMeal);
         }
     }
 
     @Override
-    public void delete(Meal userMeal) {
-        userMeals.remove(userMeal);
+    public void delete(int id) {
+        userMeals.remove(getIndex(id));
+    }
+
+    private int getIndex(int id) {
+        return IntStream.range(0, userMeals.size())
+                .filter(i -> userMeals.get(i).getId().equals(id))
+                .findFirst()
+                .orElse(-1);
     }
 }
