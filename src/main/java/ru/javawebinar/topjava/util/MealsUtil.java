@@ -35,8 +35,8 @@ public class MealsUtil {
         return meals;
     }
 
-    public static List<MealTo> getMealsWithExcess(List<Meal> meals) {
-        return filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 59), CALORIE_LIMIT);
+    public static List<MealTo> getMealsWithExcess(List<Meal> meals, int caloriesPerDay) {
+        return filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 59), caloriesPerDay);
     }
 
     public static List<MealTo> filteredByStreams(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
