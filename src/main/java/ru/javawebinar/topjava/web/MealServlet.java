@@ -60,7 +60,7 @@ public class MealServlet extends HttpServlet {
         String idParam = req.getParameter("id");
         if (idParam.equals("")) {
             log.debug("POST save meal");
-            mealsStorage.save(new Meal(null, dateTime, description, calories));
+            mealsStorage.create(new Meal(null, dateTime, description, calories));
         } else {
             log.debug("POST update meal");
             mealsStorage.update(new Meal(Integer.parseInt(req.getParameter("id")), dateTime, description, calories));

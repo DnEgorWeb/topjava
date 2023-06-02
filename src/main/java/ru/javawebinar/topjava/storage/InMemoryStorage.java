@@ -34,18 +34,21 @@ public class InMemoryStorage implements MealsStorage {
     }
 
     @Override
-    public void save(Meal userMeal) {
+    public Meal create(Meal userMeal) {
         Integer existingId = userMeal.getId();
         Integer id = existingId == null ? counter.getAndIncrement() : existingId;
-        userMeals.add(new Meal(id, userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories()));
+        Meal meal = new Meal(id, userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories());
+        userMeals.add(meal);
+        return meal;
     }
 
     @Override
-    public void update(Meal userMeal) {
+    public Meal update(Meal userMeal) {
         int index = userMeal.getId();
         if (index >= 0) {
             userMeals.set(index, userMeal);
         }
+        return userMeal;
     }
 
     @Override
