@@ -12,6 +12,8 @@
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
+        <th>-</th>
+        <th>-</th>
     </tr>
     <jsp:useBean id="meals" scope="request" type="java.util.List"/>
     <c:forEach var="meal" items="${meals}">
@@ -19,9 +21,15 @@
             <td class="date-time">${meal.dateTime}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
+            <td><a href="?action=update&id=${meal.id}">Update</a></td>
+            <td><a href="?action=delete&id=${meal.id}">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
+<br />
+<a href="?action=create">
+    <button class="button">Add a meal</button>
+</a>
 <script type="text/javascript">
     document.querySelectorAll(".date-time").forEach(node => {
         node.innerHTML = formatDate(node.innerHTML)
