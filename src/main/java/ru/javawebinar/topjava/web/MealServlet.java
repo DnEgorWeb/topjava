@@ -37,7 +37,9 @@ public class MealServlet extends HttpServlet {
                 break;
             case "create":
                 log.debug("GET create meal");
-                req.getRequestDispatcher("/mealCreate.jsp").forward(req, resp);
+                Meal meal = new Meal(null, LocalDateTime.now(), "", 0);
+                req.setAttribute("meal", meal);
+                req.getRequestDispatcher("/mealUpdate.jsp").forward(req, resp);
                 break;
             case "delete":
                 log.debug("GET delete meal");
@@ -50,20 +52,18 @@ public class MealServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         LocalDateTime dateTime = LocalDateTime.parse(req.getParameter("dateTime"));
         String description = req.getParameter("description");
         int calories = Integer.parseInt(req.getParameter("calories"));
         String idParam = req.getParameter("id");
-        if (idParam == null) {
+        if (idParam.equals("")) {
             log.debug("POST save meal");
-            Meal meal = new Meal(null, dateTime, description, calories);
-            mealsStorage.save(meal);
+            mealsStorage.save(new Meal(null, dateTime, description, calories));
         } else {
             log.debug("POST update meal");
-            Meal meal = new Meal(Integer.parseInt(req.getParameter("id")), dateTime, description, calories);
-            mealsStorage.update(meal);
+            mealsStorage.update(new Meal(Integer.parseInt(req.getParameter("id")), dateTime, description, calories));
         }
         redirectToMeals(resp);
     }

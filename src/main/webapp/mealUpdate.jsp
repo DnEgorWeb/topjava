@@ -10,11 +10,11 @@
 <form class="form" method="post">
     <input type="hidden" name="id" value="${meal.id}" />
     <label for="dateTime">Date</label>
-    <input id="dateTime" name="dateTime" value="${meal.dateTime}" type="datetime-local" readonly>
+    <input id="dateTime" name="dateTime" value="${meal.dateTime}" type="datetime-local" required>
     <label for="description">Description</label>
-    <input id="description" name="description" value="${meal.description}">
+    <input id="description" name="description" value="${meal.description}" required>
     <label for="calories">Calories</label>
-    <input id="calories" name="calories" value="${meal.calories}">
+    <input id="calories" name="calories" value="${meal.calories}" required>
     <br/>
     <button>Update</button>
 </form>
