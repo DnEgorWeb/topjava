@@ -12,7 +12,6 @@
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
-        <th>Out of bounds</th>
     </tr>
     <jsp:useBean id="meals" scope="request" type="java.util.List"/>
     <c:forEach var="meal" items="${meals}">
@@ -20,7 +19,6 @@
             <td class="date-time">${meal.dateTime}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td>${meal.excess ? "yes" : "no"}</td>
         </tr>
     </c:forEach>
 </table>
