@@ -16,7 +16,7 @@
     <label for="calories">Calories</label>
     <input id="calories" name="calories" value="${meal.calories}" required>
     <br/>
-    <button>Update</button>
+    <button>${meal.id == null ? "Create" : "Update"}</button>
 </form>
 </body>
 </html>
