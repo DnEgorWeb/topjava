@@ -25,15 +25,16 @@ public class MealInMemoryStorage implements MealsStorage {
 
     @Override
     public Meal create(Meal userMeal) {
-        if (userMeal.getId() == null) {
-            userMeal.setId(counter.getAndIncrement());
-        }
+        userMeal.setId(counter.getAndIncrement());
         return userMeals.put(userMeal.getId(), userMeal);
     }
 
     @Override
     public Meal update(Meal userMeal) {
-        return userMeals.put(userMeal.getId(), userMeal);
+        if (userMeals.containsKey(userMeal.getId())) {
+            return userMeals.put(userMeal.getId(), userMeal);
+        }
+        return null;
     }
 
     @Override
