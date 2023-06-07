@@ -30,7 +30,7 @@ public class MealTo {
                 '}';
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
