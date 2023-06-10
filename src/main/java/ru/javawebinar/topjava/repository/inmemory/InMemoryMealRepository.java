@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class InMemoryMealRepository implements MealRepository {
     private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
@@ -24,23 +26,35 @@ public class InMemoryMealRepository implements MealRepository {
             repository.put(meal.getId(), meal);
             return meal;
         }
-        // handle case: update, but not present in storage
-        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        return checkBelongsToUser(meal.getId(), meal.getUserId(), null,
+                (ignored) -> repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal));
     }
 
     @Override
-    public boolean delete(int id) {
-        return repository.remove(id) != null;
+    public boolean delete(int id, int userId) {
+        return checkBelongsToUser(id, userId, false, (meal) -> repository.remove(id) != null);
     }
 
     @Override
-    public Meal get(int id) {
-        return repository.get(id);
+    public Meal get(int id, int userId) {
+        return checkBelongsToUser(id, userId, null, (meal) -> meal);
     }
 
     @Override
-    public Collection<Meal> getAll() {
-        return repository.values();
+    public Collection<Meal> getAll(int userId) {
+        return repository.values()
+                .stream()
+                .filter(m -> m.getUserId() == userId)
+                .sorted((a, b) -> b.getDateTime().compareTo(a.getDateTime()))
+                .collect(Collectors.toList());
+    }
+
+    private <T> T checkBelongsToUser(int id, int userId, T negativeResult, Function<Meal, T> cb) {
+        Meal meal = repository.get(id);
+        if (meal.getUserId() == userId) {
+            return cb.apply(meal);
+        }
+        return negativeResult;
     }
 }
 
