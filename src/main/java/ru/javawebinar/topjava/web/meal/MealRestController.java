@@ -38,6 +38,10 @@ public class MealRestController {
                 startTime, endTime);
     }
 
+    public Meal get(int id) {
+        return service.get(id, SecurityUtil.authUserId());
+    }
+
     public Meal create(Meal meal) {
         log.info("create {}", meal);
         checkNew(meal);

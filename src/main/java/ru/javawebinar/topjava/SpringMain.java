@@ -20,7 +20,7 @@ public class SpringMain {
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
-            mealRestController.create(new Meal(0, LocalDateTime.now(), "mock", MealsUtil.DEFAULT_CALORIES_PER_DAY, 0));
+            mealRestController.create(new Meal(LocalDateTime.now(), "mock", MealsUtil.DEFAULT_CALORIES_PER_DAY, 0));
         }
     }
 }
