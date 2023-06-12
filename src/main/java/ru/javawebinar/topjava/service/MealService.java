@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class MealService {
 
     public List<Meal> getAll(int userId) {
         return new ArrayList<>(repository.getAll(userId));
+    }
+
+    public List<Meal> getBetween(int userId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return repository.getBetween(userId, startDateTime, endDateTime);
     }
 
     public void update(Meal meal) {
