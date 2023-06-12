@@ -24,12 +24,19 @@ public class MealServlet extends HttpServlet {
 
     private MealRestController mealRestController;
 
+    private ConfigurableApplicationContext appCtx;
+
     @Override
     public void init() {
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
-            log.info("MealServlet init");
-            mealRestController = appCtx.getBean(MealRestController.class);
-        }
+        log.info("MealServlet init");
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        mealRestController = appCtx.getBean(MealRestController.class);
+    }
+
+    @Override
+    public void destroy() {
+        log.info("MealServlet destroy");
+        appCtx.close();
     }
 
     @Override
