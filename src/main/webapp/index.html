@@ -6,6 +6,16 @@
 <body>
 <h3>Проект <a href="https://github.com/JavaWebinar/topjava" target="_blank">Java Enterprise (Topjava)</a></h3>
 <hr>
+<form action="users?action=auth">
+    <label>
+        Authenticate as
+        <select name="role">
+            <option value="1">User</option>
+            <option value="2">Admin</option>
+        </select>
+    </label>
+    <input type="submit" value="Ok">
+</form>
 <ul style="font-size: large">
     <li><a href="users">Users</a></li>
     <li><a href="meals">Meals</a></li>
