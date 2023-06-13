@@ -6,7 +6,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +51,9 @@ public class InMemoryMealRepository implements MealRepository {
         return getList(userId);
     }
 
-    public List<Meal> getBetween(int userId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return getList(userId, m -> DateTimeUtil.isBetweenHalfOpen(m.getDateTime(), startDateTime, endDateTime));
+    @Override
+    public List<Meal> getBetween(int userId, LocalDate startDate, LocalDate endDate) {
+        return getList(userId, m -> DateTimeUtil.isBetweenHalfOpen(m.getDate(), startDate, endDate));
     }
 
     private List<Meal> getList(int userId) {
