@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,7 +22,7 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(m -> save(m, 0));
+        MealsUtil.meals.forEach(m -> save(m, m.getUserId()));
     }
 
     @Override
@@ -47,26 +48,29 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return getList(m -> m.getUserId() == userId);
+        return getList(userId);
     }
 
     public List<Meal> getBetween(int userId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return getList(m -> m.getUserId() == userId &&
-                DateTimeUtil.isBetweenHalfOpen(m.getDateTime(), startDateTime, endDateTime));
+        return getList(userId, m -> DateTimeUtil.isBetweenHalfOpen(m.getDateTime(), startDateTime, endDateTime));
     }
 
-    private List<Meal> getList(Predicate<Meal> condition) {
+    private List<Meal> getList(int userId) {
+        return getList(userId, m -> true);
+    }
+
+    private List<Meal> getList(int userId, Predicate<Meal> condition) {
         return repository.values()
                 .stream()
-                .filter(condition)
-                .sorted((a, b) -> b.getDateTime().compareTo(a.getDateTime()))
+                .filter(m -> m.getUserId() == userId && condition.test(m))
+                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
     }
 
-    private <T> T checkBelongsToUser(int id, int userId, T negativeResult, Function<Meal, T> cb) {
+    private <T> T checkBelongsToUser(int id, int userId, T negativeResult, Function<Meal, T> verifiedMealHandler) {
         Meal meal = repository.get(id);
         if (meal.getUserId() == userId) {
-            return cb.apply(meal);
+            return verifiedMealHandler.apply(meal);
         }
         return negativeResult;
     }
