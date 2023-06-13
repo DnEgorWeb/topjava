@@ -24,7 +24,7 @@ public class MealServlet extends HttpServlet {
 
     private MealRestController mealRestController;
 
-    private ConfigurableApplicationContext appCtx;
+    private static ConfigurableApplicationContext appCtx;
 
     @Override
     public void init() {
@@ -46,7 +46,7 @@ public class MealServlet extends HttpServlet {
 
         Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
                 LocalDateTime.parse(request.getParameter("dateTime")), request.getParameter("description"),
-                Integer.parseInt(request.getParameter("calories")), SecurityUtil.authUserId());
+                Integer.parseInt(request.getParameter("calories")), null);
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         if (id.isEmpty()) {
