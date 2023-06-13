@@ -68,10 +68,10 @@ public class InMemoryMealRepository implements MealRepository {
                 .collect(Collectors.toList());
     }
 
-    private <T> T checkBelongsToUser(int id, int userId, T negativeResult, Function<Meal, T> verifiedMealHandler) {
+    private <T> T checkBelongsToUser(int id, int userId, T negativeResult, Function<Meal, T> callback) {
         Meal meal = repository.get(id);
         if (meal.getUserId() == userId) {
-            return verifiedMealHandler.apply(meal);
+            return callback.apply(meal);
         }
         return negativeResult;
     }
