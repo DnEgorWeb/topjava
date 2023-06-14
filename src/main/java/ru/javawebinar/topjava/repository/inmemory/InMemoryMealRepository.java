@@ -49,7 +49,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return getList(userId);
+        return getList(userId, m -> true);
     }
 
     @Override
@@ -57,24 +57,21 @@ public class InMemoryMealRepository implements MealRepository {
         return getList(userId, m -> DateTimeUtil.isBetweenHalfOpen(m.getDate(), startDate, endDate));
     }
 
-    private List<Meal> getList(int userId) {
-        return getList(userId, m -> true);
-    }
-
     private List<Meal> getList(int userId, Predicate<Meal> condition) {
         return repository.values()
                 .stream()
-                .filter(m -> m.getUserId() == userId && condition.test(m))
+                .filter(m -> m.getUserId() == userId)
+                .filter(condition)
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
     }
 
     private <T> T checkBelongsToUser(int id, int userId, T negativeResult, Function<Meal, T> callback) {
         Meal meal = repository.get(id);
-        if (meal.getUserId() == userId) {
-            return callback.apply(meal);
+        if (meal == null || meal.getUserId() != userId) {
+            return negativeResult;
         }
-        return negativeResult;
+        return callback.apply(meal);
     }
 }
 
