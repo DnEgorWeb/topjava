@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.to.MealTo;
 
 import java.time.LocalDate;
@@ -17,16 +18,18 @@ import java.util.stream.Collectors;
 public class MealsUtil {
     public static final int DEFAULT_CALORIES_PER_DAY = 2000;
 
-    public static final List<Meal> meals = Arrays.asList(
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500, 1),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000, 1),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500, 1),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100, 1),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000, 1),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500, 1),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410, 1),
-            new Meal(LocalDateTime.of(2023, Month.AUGUST, 18, 12, 30), "Ланч", 1200, 2),
-            new Meal(LocalDateTime.of(2023, Month.AUGUST, 18, 12, 30), "Ужин", 300, 2)
+    public static final List<Meal> userMeals = Arrays.asList(
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500, Role.USER.ordinal()),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000, Role.USER.ordinal()),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500, Role.USER.ordinal()),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100, Role.USER.ordinal()),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000, Role.USER.ordinal()),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500, Role.USER.ordinal()),
+            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410, Role.USER.ordinal())
+    );
+    public static final List<Meal> adminMeals = Arrays.asList(
+            new Meal(LocalDateTime.of(2023, Month.AUGUST, 18, 12, 30), "Ланч", 1200, Role.ADMIN.ordinal()),
+            new Meal(LocalDateTime.of(2023, Month.AUGUST, 18, 12, 30), "Ужин", 300, Role.ADMIN.ordinal())
     );
 
     public static List<MealTo> getTos(Collection<Meal> meals, int caloriesPerDay) {
