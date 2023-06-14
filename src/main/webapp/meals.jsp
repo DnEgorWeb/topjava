@@ -29,7 +29,7 @@
             <input type="date" name="start_date" value=${param.start_date}>
         </label>
         <label>
-            До даты (не включая)
+            До даты (включая)
             <input type="date" name="end_date" value=${param.end_date}>
         </label>
         <br><br>

@@ -60,7 +60,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getBetween(int userId, LocalDate startDate, LocalDate endDate) {
-        return getList(userId, m -> DateTimeUtil.isBetweenHalfOpen(m.getDate(), startDate, endDate));
+        return getList(userId, m -> DateTimeUtil.isBetweenBothOpen(m.getDate(), startDate, endDate));
     }
 
     private List<Meal> getList(int userId, Predicate<Meal> condition) {

@@ -12,6 +12,10 @@ public class DateTimeUtil {
         return origin.compareTo(start) >= 0 && origin.compareTo(end) < 0;
     }
 
+    public static <T extends Comparable<T>> boolean isBetweenBothOpen(T origin, T start, T end) {
+        return origin.compareTo(start) >= 0 && origin.compareTo(end) <= 0;
+    }
+
     public static LocalDate parseLocalDate(String str) {
         try {
             return LocalDate.parse(str);
