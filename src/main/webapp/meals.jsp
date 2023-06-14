@@ -26,20 +26,20 @@
     <form method="get" action="meals">
         <label>
             От даты (включая)
-            <input type="date" name="start_date" value=${start_date}>
+            <input type="date" name="start_date" value=${param.start_date}>
         </label>
         <label>
             До даты (не включая)
-            <input type="date" name="end_date" value=${end_date}>
+            <input type="date" name="end_date" value=${param.end_date}>
         </label>
         <br><br>
         <label>
             От времени (включая)
-            <input type="time" name="start_time" value=${start_time}>
+            <input type="time" name="start_time" value=${param.start_time}>
         </label>
         <label>
             До времени (не включая)
-            <input type="time" name="end_time" value=${end_time}>
+            <input type="time" name="end_time" value=${param.end_time}>
         </label>
         <br><br>
         <button type="submit">Filter</button>

@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -24,7 +22,7 @@ public class MealServlet extends HttpServlet {
 
     private MealRestController mealRestController;
 
-    private static ConfigurableApplicationContext appCtx;
+    private ConfigurableApplicationContext appCtx;
 
     @Override
     public void init() {
@@ -87,15 +85,11 @@ public class MealServlet extends HttpServlet {
                     String endDateParam = request.getParameter("end_date");
                     String startTimeParam = request.getParameter("start_time");
                     String endTimeParam = request.getParameter("end_time");
-                    request.setAttribute("start_date", startDateParam);
-                    request.setAttribute("end_date", endDateParam);
-                    request.setAttribute("start_time", startTimeParam);
-                    request.setAttribute("end_time", endTimeParam);
                     request.setAttribute("meals",
-                            mealRestController.getBetween(DateTimeUtil.parseLocalDate(startDateParam, LocalDate.MIN),
-                                    DateTimeUtil.parseLocalDate(endDateParam, LocalDate.MAX),
-                                    DateTimeUtil.parseLocalTime(startTimeParam, LocalTime.MIN),
-                                    DateTimeUtil.parseLocalTime(endTimeParam, LocalTime.MAX)));
+                            mealRestController.getBetween(DateTimeUtil.parseLocalDate(startDateParam),
+                                    DateTimeUtil.parseLocalDate(endDateParam),
+                                    DateTimeUtil.parseLocalTime(startTimeParam),
+                                    DateTimeUtil.parseLocalTime(endTimeParam)));
                 }
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;

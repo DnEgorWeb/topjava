@@ -35,8 +35,10 @@ public class MealRestController {
 
     public List<MealTo> getBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
         log.info("getBetween");
-        List<Meal> meals = service.getBetween(SecurityUtil.authUserId(), startDate, endDate);
-        return MealsUtil.getFilteredTos(meals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+        List<Meal> meals = service.getBetween(SecurityUtil.authUserId(), startDate == null ? LocalDate.MIN : startDate,
+                endDate == null ? LocalDate.MAX : endDate);
+        return MealsUtil.getFilteredTos(meals, SecurityUtil.authUserCaloriesPerDay(),
+                startTime == null ? LocalTime.MIN : startTime, endTime == null ? LocalTime.MAX : endTime);
     }
 
     public Meal get(int id) {

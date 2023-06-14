@@ -12,19 +12,19 @@ public class DateTimeUtil {
         return origin.compareTo(start) >= 0 && origin.compareTo(end) < 0;
     }
 
-    public static LocalDate parseLocalDate(String str, LocalDate fallbackDate) {
+    public static LocalDate parseLocalDate(String str) {
         try {
             return LocalDate.parse(str);
         } catch (Throwable err) {
-            return fallbackDate;
+            return null;
         }
     }
 
-    public static LocalTime parseLocalTime(String str, LocalTime fallbackTime) {
+    public static LocalTime parseLocalTime(String str) {
         try {
             return LocalTime.parse(str);
         } catch (Throwable err) {
-            return fallbackTime;
+            return null;
         }
     }
 
