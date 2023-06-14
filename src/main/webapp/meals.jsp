@@ -29,7 +29,7 @@
             <input type="date" name="start_date" value=${start_date}>
         </label>
         <label>
-            До даты (включая)
+            До даты (не включая)
             <input type="date" name="end_date" value=${end_date}>
         </label>
         <br><br>
@@ -38,7 +38,7 @@
             <input type="time" name="start_time" value=${start_time}>
         </label>
         <label>
-            До времени (включая)
+            До времени (не включая)
             <input type="time" name="end_time" value=${end_time}>
         </label>
         <br><br>
