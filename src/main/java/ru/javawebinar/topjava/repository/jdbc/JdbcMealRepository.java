@@ -11,14 +11,21 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Repository
 public class JdbcMealRepository implements MealRepository {
-    private static final BeanPropertyRowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
+    private static final BeanPropertyRowMapper<Meal> ROW_MAPPER = new BeanPropertyRowMapper<Meal>() {
+        @Override
+        public Meal mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Meal(rs.getInt("id"), rs.getTimestamp("datetime").toLocalDateTime(), rs.getString("description"),
+                    rs.getInt("calories"));
+        }
+    };
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -37,7 +44,7 @@ public class JdbcMealRepository implements MealRepository {
     @Override
     public Meal save(Meal meal, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource().addValue("id", meal.getId()).addValue("user_id", userId)
-                .addValue("datetime", meal.getDateTime().toEpochSecond(ZoneOffset.UTC))
+                .addValue("datetime", Timestamp.valueOf(meal.getDateTime()))
                 .addValue("description", meal.getDescription()).addValue("calories", meal.getCalories());
 
         if (meal.isNew()) {
@@ -69,7 +76,8 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE datetime>=? AND datetime<? AND user_id=? ORDER BY datetime DESC", ROW_MAPPER,
+        return jdbcTemplate.query(
+                "SELECT * FROM meals WHERE datetime>=? AND datetime<? AND user_id=? ORDER BY datetime DESC", ROW_MAPPER,
                 Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime), userId);
     }
 }
