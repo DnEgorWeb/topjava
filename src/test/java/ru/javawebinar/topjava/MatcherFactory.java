@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,6 +33,10 @@ public class MatcherFactory {
 
         public void assertMatch(Iterable<T> actual, Iterable<T> expected) {
             assertThat(actual).usingRecursiveFieldByFieldElementComparatorIgnoringFields(fieldsToIgnore).isEqualTo(expected);
+        }
+
+        public void assertMatch(List<T> actual, List<T> expected) {
+            assertThat(actual).hasSameElementsAs(expected);
         }
     }
 }
