@@ -1,7 +1,10 @@
 package ru.javawebinar.topjava.service;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -28,9 +31,11 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @Ignore
 public class MealServiceTest {
-
     @Autowired
     private MealService service;
+
+    @Rule
+    public final TestRule benchmarkRun = new BenchmarkRule();
 
     @Test
     public void delete() {
