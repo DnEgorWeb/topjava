@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.service;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -29,7 +28,6 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@Ignore
 public class MealServiceTest {
     @Autowired
     private MealService service;
