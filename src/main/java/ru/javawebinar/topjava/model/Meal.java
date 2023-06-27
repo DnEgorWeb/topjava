@@ -12,7 +12,15 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "meal", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"})})
+@NamedQueries({@NamedQuery(name = Meal.GET_ALL, query = "SELECT m FROM Meal m WHERE m.user.id = :userId"),
+        @NamedQuery(name = Meal.GET_BETWEEN_HALF_OPEN, query = "SELECT m FROM Meal m WHERE " +
+                " m.user.id = :userId AND m.dateTime >= :start AND m.dateTime < :end ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = Meal.DELETE, query = "DELETE from Meal m WHERE m.user.id = :userId AND m.id = :id")})
 public class Meal extends AbstractBaseEntity {
+    public static final String GET_ALL = "Meal.getAll";
+    public static final String GET_BETWEEN_HALF_OPEN = "Meal.getBetweenHalfOpen";
+    public static final String DELETE = "Meal.delete";
+
     @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
