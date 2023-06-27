@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Meal extends AbstractBaseEntity {
 
     @NotBlank
     @Column(nullable = false)
-    @Range(min = 2, max = 120)
+    @Length(min = 2, max = 120)
     private String description;
 
     @Range(min = 10, max = 10000)
