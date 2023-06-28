@@ -3,7 +3,7 @@ package ru.javawebinar.topjava.service;
 import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestWatcher;
+import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -16,13 +16,13 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.utils.TestBenchmarkResult;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -34,32 +34,30 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
-    private static final List<String> timelog = new ArrayList<>();
+    private static final List<TestBenchmarkResult> testResults = new ArrayList<>();
 
     @Rule
-    public final TestWatcher benchmarkRun = new TestWatcher() {
-        LocalDateTime startDateTime;
-
+    public final Stopwatch benchmarkRun = new Stopwatch() {
         @Override
-        protected void starting(Description description) {
-            startDateTime = LocalDateTime.now();
-        }
-
-        @Override
-        protected void finished(Description description) {
-            String testLog = description.getMethodName() + " - " +
-                    ChronoUnit.MILLIS.between(startDateTime, LocalDateTime.now()) + "ms";
-            timelog.add(testLog);
-            log.info(testLog);
+        protected void finished(long nanos, Description description) {
+            TestBenchmarkResult result =
+                    new TestBenchmarkResult(description.getMethodName(), runtime(TimeUnit.MILLISECONDS));
+            log.info(result.getMethodName() + " - " + result.getExecutionTime() + "ms");
+            testResults.add(result);
         }
     };
-    @Autowired
-    private MealService service;
 
     @AfterClass
     public static void onFinish() {
-        timelog.forEach(log::info);
+        StringBuilder output = new StringBuilder("Method Name       - Time\n");
+        for (TestBenchmarkResult testResult : testResults) {
+            output.append(String.format("%-30s - %3dms\n", testResult.getMethodName(), testResult.getExecutionTime()));
+        }
+        log.info(output.toString());
     }
+
+    @Autowired
+    private MealService service;
 
     @Test
     public void delete() {
