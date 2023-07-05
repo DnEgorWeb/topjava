@@ -14,8 +14,6 @@ public class ActiveDbProfileResolver extends DefaultActiveProfilesResolver {
         String[] activeProfiles = super.resolve(aClass);
         String[] activeProfilesWithDb = Arrays.copyOf(activeProfiles, activeProfiles.length + 1);
         activeProfilesWithDb[activeProfiles.length] = Profiles.getActiveDbProfile();
-        String[] activeProfilesWithDbAndRepos = Arrays.copyOf(activeProfilesWithDb, activeProfilesWithDb.length + 1);
-        activeProfilesWithDbAndRepos[activeProfilesWithDb.length] = Profiles.REPOSITORY_IMPLEMENTATION;
-        return activeProfilesWithDbAndRepos;
+        return activeProfilesWithDb;
     }
 }
