@@ -69,6 +69,12 @@
     </beans>
 
     <beans profile="jdbc,jpa,datajpa">
+        <tx:annotation-driven/>
+
+        <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
+        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+              p:entityManagerFactory-ref="entityManagerFactory"/>
+
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource"
               p:packagesToScan="ru.javawebinar.**.model">
@@ -102,14 +108,6 @@
         </bean>
 
         <bean class="ru.javawebinar.topjava.repository.JpaUtil"/>
-    </beans>
-
-    <beans profile="jpa,datajpa">
-        <tx:annotation-driven/>
-
-        <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
-        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
-              p:entityManagerFactory-ref="entityManagerFactory"/>
     </beans>
 
     <beans profile="jpa">
